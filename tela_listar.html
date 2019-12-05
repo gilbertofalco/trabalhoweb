@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="tela_listar.css">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body onload="buscaDados()">  
+
+        <div class="BarraSuperior">
+                <ul class="menu">
+                  <li class="entrar"><a href="tela_inicial.html">Home</a></li>
+                  <li class="entrar"><a href="tela_incluir.html">Incluir novo</a></li>
+                  <li class="entrar"><a href="">Listar Vinhos</a></li>
+
+                </ul>
+            </div>
+
+        <div>
+        
+    </div>
+
+    <img class="fundo" src="tela_listar.jpg" alt="Vinho">
+
+    <div>
+        
+        <div class="barraPesquisa">                                  
+          
+          <input type="text" id="buscaVinho" placeholder="Pesquisar vinhos" name="buscaVinho" style="width: 400px;">
+          <button onclick="buscaDados()" type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+
+      <table class="table table-dark table-hover" style="width: 770px;position: absolute; top: 150px;left: 20%; ">
+          
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>NOME</th>
+                <th>DESCRIÇÃO</th>
+                <th>PREÇO</th>
+                <th><i class="glyphicon glyphicon-pencil" style="font-size: 20px"></i></th>
+                <th><i class="fa fa-trash-o" style="font-size:24px"></i></th>
+
+            </tr>
+        </thead>
+        <tbody id="listaVinho">
+
+
+        </tbody>
+      </table>
+  </div>
+</body>
+
+
+<script>
+  function buscaDados() {
+      console.log("VAi")
+      let busca = $('#buscaVinho').val()
+      $.get("http://localhost:3000/wines/" + busca, (data) => {
+          var UL = $("#listaVinho");
+          console.log(data);
+          $.each(data, function () {
+              UL.append(`<tr>
+                <td>${this.id}</td> 
+                <td>${this.product}</td>
+                <td>${this.desc}</td>
+                <td>${this.price}</td>
+                <th><a href="tela_editar.html?id=${this.id}"><i class="glyphicon glyphicon-pencil" style="font-size: 20px"></i></a></th>
+                <td> <a><i class="fa fa-trash-o" style="font-size:24px" onclick="apagar(${this.id})"></i></a></td>
+                </tr>`)
+          })
+      })
+  }
+
+  function apagar(id){
+
+    $.ajax({
+    url: "http://localhost:3000/wines/" + id,
+    type: 'DELETE',
+    success: function(result) {
+      location.reload();
+    }
+
+  
+
+    
+});
+
+  }
+
+
+
+
+</script>
+</html>

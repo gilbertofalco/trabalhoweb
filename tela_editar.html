@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <link rel="stylesheet" href="tela_incluir.css">
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+</head>
+
+<body onload="buscarDados()">
+
+  <div class="BarraSuperior">
+    <ul class="menu">
+      <li class="entrar"><a href="tela_inicial.html">Home</a></li>
+      <li class="entrar"><a href="">Incluir novo</a></li>
+      <li class="entrar"><a href="tela_listar.html">Listar Vinhos</a></li>
+    </ul>
+  </div>
+
+  <div>
+
+  </div>
+
+  <img class="fundo" src="tela_incluir.jpg" alt="Vinho">
+
+  <form action="/action_page.php" style="position: absolute; top: 80px; left: 35%">
+    <div class="form-group">
+      <label for="uname">Nome</label>
+      <input type="text" class="form-control" id="nomeVinho" placeholder="Insira o nome" name="uname" required
+        style="width: 400px">
+    </div>
+
+    <div class="form-group">
+      <label for="desc">Descrição</label>
+      <input type="text" class="form-control" id="descVinho" placeholder="Insira a descrição" name="desc" required>
+    </div>
+
+    <div class="form-group">
+      <label for="desc">Preço</label>
+      <input type="number" step="0.01" class="form-control" id="precoVinho" placeholder="Insira o preço" name="preco">
+    </div>
+
+    <button type="button" class="btn btn-primary" style="width: 400px;" onclick="editar()">Salvar</button>
+  </form>
+</body>
+
+<script>
+
+  function editar() {
+
+    let idVinho = getUrlParameter('id')
+    let nome = $('#nomeVinho').val()
+    let descricao = $('#descVinho').val()
+    let preco = $('#precoVinho').val()
+
+    if (nome == "") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Nome invalido!',
+
+      })
+      return false;
+    }
+
+    if (descricao == "") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Descrição invalido!',
+
+      })
+      return false;
+    }
+
+    if (preco == "") {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Preço invalido!',
+
+      })
+      return false;
+    }
+
+    $.ajax({
+      url: "http://localhost:3000/wines/" + idVinho,
+      type: 'PUT',
+      data: {"product" : nome, "desc" : descricao, "price" : preco},
+
+      success: function (result) {
+        
+      }
+    })
+    
+
+      Swal.fire(
+        'Vinho alterado',
+        'Com sucesso!',
+        'success'
+      )
+     
+  }
+
+  function buscarDados() {
+    let id = getUrlParameter('id')
+    $.get("http://localhost:3000/wines/" + id, (data) => {
+      var UL = $("#listaVinho");
+      console.log(data);
+
+      $('#nomeVinho').val(data.product)
+      $('#descVinho').val(data.desc)
+      $('#precoVinho').val(data.price)
+
+    })
+
+
+  }
+
+  var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
+
+</script>
+
+</html>

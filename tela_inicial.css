@@ -1,0 +1,42 @@
+img.Principal{
+    width: 100%;
+
+}
+
+p.Inicial{
+    position: absolute;
+    left:280px;
+    top: 200px;
+    font-size: 40px;
+}
+
+ul.menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color:black;
+    font-family: sans-serif;
+    width: 100%;
+  }
+  
+  li.menu {
+    float: left;
+  }
+
+  li.entrar{
+      float: left;
+  }
+  
+  li a {
+    display: block;
+    color:white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-family: sans-serif;
+  }
+  
+  li a:hover {
+    background-color: #111111;
+  }
